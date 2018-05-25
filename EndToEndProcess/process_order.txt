@@ -1,0 +1,18 @@
+- IngestData
+    - load_data
+    - quick_look_to_data
+    - split_data
+- GetDataInsights
+    - analyze_train_set
+    - experiment_feature_combinations
+- PrepareDataForML
+    - clean_data
+    - handle_categorical_text_features
+    - extract_new_features
+    - feature_selection
+    - pipeline_data_preparation
+- SelectTrainModel
+    -fit_predict_evaluate_using_cv
+- FineTuneModel
+    - tune_hyperparameters
+    - analyze_best_models_and_errors

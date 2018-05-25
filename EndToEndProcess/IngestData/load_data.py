@@ -9,3 +9,5 @@ def load_housing_data(housing_path="D:/handsonml/dataset/"):
 if __name__ == "__main__":
 
     print(load_housing_data())
+
+    #now take a quick look to data
