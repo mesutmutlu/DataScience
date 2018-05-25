@@ -20,4 +20,4 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
             return np.c_[X, rooms_per_household, population_per_household]
 
 if __name__ == "__main__":
-    pass
+    print("x")
