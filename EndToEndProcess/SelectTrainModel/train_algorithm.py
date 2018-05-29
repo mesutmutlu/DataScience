@@ -7,6 +7,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from EndToEndProcess.IngestData.split_data import stratified_split
+from EndToEndProcess.IngestData.load_data import load_housing_data
 import numpy as np
 import sys
 
@@ -16,7 +18,6 @@ def train_simple():
 
 
 def regression_evaluate_traing_using_cv(lst_algorithms, dataset, labels):
-
 
     for alg_name, alg_obj, eval_met in lst_algorithms:
         print(alg_name, alg_obj, eval_met)
@@ -35,8 +36,12 @@ def display_scores(scores):
 
 
 if __name__ == "__main__":
+    housing = load_housing_data()
 
-    housing_prepared, housing_labels = housing_preparation_pipeline()
+    housing["income_cat"] = np.ceil(housing["median_income"] / 1.5)
+    housing["income_cat"].where(housing["income_cat"] < 5, 5.0, inplace=True)
+
+    housing_prepared, housing_labels = housing_preparation_pipeline(housing)
 
     alg_list= []
 
