@@ -20,16 +20,21 @@ if __name__ == "__main__":
 
     strat_train_set, strat_test_set = stratified_split(housing, 0.2, "income_cat")
     print(len(strat_train_set), "strat_train", len(strat_test_set), "strat_test")
-
+    print(strat_test_set.head())
     housing_prepared, housing_labels = housing_preparation_pipeline(strat_train_set)
+
+
+
+    X_test, y_test = housing_preparation_pipeline(strat_test_set)
+
+    print(X_test, y_test)
 
     grid_search = best_estimator_for_reg(housing_prepared, housing_labels)
 
-
     final_model = grid_search.best_estimator_
-
-    X_test, y_test = housing_preparation_pipeline(strat_test_set)
     final_predictions = final_model.predict(X_test)
+
+    print(np.c_(y_test, final_predictions))
     final_mse = mean_squared_error(y_test, final_predictions)
     final_rmse = np.sqrt(final_mse) # => evaluates to 48,209.6
     print(final_mse)
