@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
 
     X_test, y_test = housing_preparation_pipeline(strat_test_set)
-
+   #
     print(X_test, y_test)
 
     grid_search = best_estimator_for_reg(housing_prepared, housing_labels)
