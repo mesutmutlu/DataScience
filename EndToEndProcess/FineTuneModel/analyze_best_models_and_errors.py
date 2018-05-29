@@ -35,7 +35,7 @@ if __name__ == "__main__":
     final_predictions = final_model.predict(X_test)
 
     print(type(y_test.values), type(final_predictions))
-    print(np.c_(y_test.values,final_predictions))
+    print(np.c_[y_test.values,final_predictions])
     final_mse = mean_squared_error(y_test, final_predictions)
     final_rmse = np.sqrt(final_mse) # => evaluates to 48,209.6
     print(final_mse)
