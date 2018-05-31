@@ -71,6 +71,13 @@ def plot_precision_vs_recall(precisions, recalls):
     plt.ylabel("Precision", fontsize=16)
     plt.axis([0, 1, 0, 1])
 
+def plot_roc_curve(fpr, tpr, label=None):
+    plt.plot(fpr, tpr, linewidth=2, label=label)
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.axis([0, 1, 0, 1])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+
 if __name__ == "__main__":
 
     mnist = fetch_mldata('MNIST original')
@@ -199,5 +206,38 @@ if __name__ == "__main__":
     plt.figure(figsize=(8, 6))
     plot_precision_vs_recall(precisions, recalls)
     save_fig("precision_vs_recall_plot")
+    plt.show(block=False)
+    time.sleep(1)
+    plt.close()
+
+    from sklearn.metrics import roc_curve
+
+    fpr, tpr, thresholds = roc_curve(y_train_5, y_scores)
+
+    plot_roc_curve(fpr, tpr)
     plt.show()
-    
+    time.sleep(1)
+    plt.close()
+
+    from sklearn.metrics import roc_auc_score
+    print(roc_auc_score(y_train_5, y_scores)) # roc_auc_score(area under curve should approach to 1 and if it  approaches to 0.5, it means that the classifier is a random classifier
+
+    from sklearn.ensemble import RandomForestClassifier
+
+    forest_clf = RandomForestClassifier(random_state=42)
+    y_probas_forest = cross_val_predict(forest_clf, X_train, y_train_5, cv=3,
+                                        method="predict_proba")
+
+    y_scores_forest = y_probas_forest[:, 1]
+
+    fpr_forest, tpr_forest, thresholds_forest = roc_curve(y_train_5, y_scores_forest)
+
+    plt.plot(fpr, tpr, "b:", label="SGD")
+    plot_roc_curve(fpr_forest, tpr_forest, "Random Forest")
+    plt.show()
+    time.sleep(1)
+    plt.close()
+    print("auc score of forest", roc_auc_score(y_train_5, y_scores_forest))
+
+    y_train_pred_forest = cross_val_predict(forest_clf, X_train, y_train_5, cv=3)
+    print("precision of forest", precision_score(y_train_5, y_train_pred_forest), "recall of forest", recall_score(y_train_5, y_train_pred_forest))
