@@ -3,6 +3,7 @@ import tensorflow as tf
 # Common imports
 import numpy as np
 import os
+from EndToEndProcess.IngestData.load_data import load_housing_data
 
 # to make this notebook's output stable across runs
 def reset_graph(seed=42):
@@ -102,4 +103,27 @@ if __name__ == "__main__":
         print(y_val)  # 10
         print(z_val)  # 15
 
+    print("linear regression")
+    import numpy as np
+    from sklearn.datasets import fetch_california_housing
+
+    reset_graph()
+    housing = fetch_california_housing()
+    print(housing)
+    m, n = housing.data.shape
+    print(m, n)
+    housing_data_plus_bias = np.c_[np.ones((m, 1)), housing.data]
+    print(np.ones((m, 1)))
+    print(housing_data_plus_bias)
+    X = tf.constant(housing_data_plus_bias, dtype=tf.float32, name="X")
+    print(X)
+    y = tf.constant(housing.target.reshape(-1, 1), dtype=tf.float32, name="y")
+    print(y, housing.target.reshape(-1, 1))
+    XT = tf.transpose(X)
+    print(XT)
+    theta = tf.matmul(tf.matmul(tf.matrix_inverse(tf.matmul(XT, X)), XT), y)
+    with tf.Session() as sess:
+        theta_value = theta.eval()
+
+    print(theta_value)
 
